@@ -2,9 +2,6 @@ DATE = $(shell date +%Y-%m-%d_%H%M)
 
 #include environment.secret
 
-# HELP
-# This will output the help for each task
-# thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help
 
 help: ## This help.
@@ -12,10 +9,10 @@ help: ## This help.
 
 .DEFAULT_GOAL := help
 
-compose-pro:  ## establece el enlace blando docker-compose.yml a compose-pro.yml
+compose-pro:
 	ln -sf docker-compose-pro.yml docker-compose.yml
 	ls -lah docker-compose.yml
-compose-dev:  ## establece el enlace blando docker-compose.yml a compose-dev.yml
+compose-dev:
 	ln -sf docker-compose-dev.yml docker-compose.yml
 	ls -lah docker-compose.yml
 

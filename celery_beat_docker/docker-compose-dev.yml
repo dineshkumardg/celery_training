@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: celery -E -A tasks worker --loglevel=info --broker=redis://redis:6379/2
+    command: celery -E -A tasks worker --pool=gevent --concurrency=50 --loglevel=info --broker=redis://redis:6379/2
     stdin_open: true
     tty: true
     restart: on-failure
