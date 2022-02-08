@@ -1,0 +1,64 @@
+version: '2.4'
+services:
+
+  celeryworker:
+    env_file: environment.secret.dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -E -A tasks worker --loglevel=info --broker=redis://redis:6379/2
+    stdin_open: true
+    tty: true
+    restart: on-failure
+    cpus: 1
+    depends_on:
+      - redis
+    networks:
+      - backend
+    
+
+  celerybeat:
+    env_file: environment.secret.dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A tasks beat --broker=redis://redis:6379/2
+    restart: on-failure
+    cpus: 1
+    stdin_open: true
+    tty: true
+    depends_on:
+      - redis
+    networks:
+      - backend
+
+  celeryflower:
+    env_file: environment.secret.dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A tasks flower --address=0.0.0.0 --port=5555 --broker=redis://redis:6379/2
+    ports:
+      - 5555:5555
+    restart: on-failure
+    cpus: 1
+    networks:
+      - backend
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+    hostname: redis
+    restart: on-failure
+    cpus: 1
+    volumes:
+      - redis-data:/data
+    networks:
+      - backend
+
+volumes:
+  redis-data:
+
+networks:
+  backend:

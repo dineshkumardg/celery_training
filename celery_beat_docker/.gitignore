@@ -1,0 +1,7 @@
+.env
+venv
+venv36
+.vscode
+environment.secret
+docker-compose.yml
+environment.secret.dev

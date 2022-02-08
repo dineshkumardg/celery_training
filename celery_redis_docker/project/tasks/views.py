@@ -14,6 +14,8 @@ def home(request):
 @csrf_exempt
 def run_task(request):
     if request.POST:
+        import pdb
+        pdb.set_trace()
         task_type = request.POST.get("type")
         task = create_task.delay(int(task_type))
         return JsonResponse({"task_id": task.id}, status=202)
